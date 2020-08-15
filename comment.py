@@ -1,12 +1,20 @@
 import praw
 import argparse
+import time
+
+class CommentNotFoundError(Exception):
+	pass
 
 with open("user_data.txt","r") as f:
-	client_id = f.readline()
-	client_secret = f.readline()
-	user_agent = f.readline()
-	username = f.readline()
-	password = f.readline()
+	client_id = f.readline().rstrip()
+	client_secret = f.readline().rstrip()
+	user_agent = f.readline().rstrip()
+	username = f.readline().rstrip()
+	password = f.readline().rstrip()
+	
+with open("default_message.txt","r") as f:
+	default_message = f.read()
+	
 	
 reddit = praw.Reddit(client_id=client_id,
 					 client_secret=client_secret,
@@ -21,9 +29,27 @@ args = parser.parse_args()
 
 if args.mode == 's':
 	submission = reddit.submission(url=args.url)
-	
 	comment = submission.reply(".")
-
+	
+	
+	comment_list = reddit.redditor(username).comments.new(limit=10)
+	found = False
+	for i in range(10):
+		for c in comment_list:
+			if c.id == comment.id:
+				found = True
+				break
+		
+		comment_list = reddit.redditor(username).comments.new(limit=10)
+	if not found:
+		raise CommentNotFoundError
+		
+	edited_comment = comment.edit("new message")
+		
+	#get comment id
+	#scan user's page for newest comment, until the newest one matches the id of what we just posted
+	#then update
+	
 elif args.mode == 'c':
 	pass
 	
