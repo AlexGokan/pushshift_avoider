@@ -1,0 +1,3 @@
+This comment was written by the pushshift avoider bot
+
+To learn more about it, please go [here](https://github.com/AlexGokan/pushshift_avoider)

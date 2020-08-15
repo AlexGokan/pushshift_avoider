@@ -19,5 +19,15 @@ parser.add_argument("mode",help = "reply to a post ('s'), or reply to a comment 
 parser.add_argument("url",help = "post or comment url")
 args = parser.parse_args()
 
+if args.mode == 's':
+	submission = reddit.submission(url=args.url)
+	
+	comment = submission.reply(".")
 
+elif args.mode == 'c':
+	pass
+	
+else:
+	print("invalid mode")
+	
 
