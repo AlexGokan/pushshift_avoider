@@ -1,0 +1,7 @@
+pushift avoider
+
+this is designed to help keep your comments hidden from pushshift, since they are terrible about letting you opt-out
+
+it works by writing a blank comment, and then once praw has scanned it and upladed it to pushift, it will replace the body with what you actually wanted
+
+there should usually be no more than a 1-minute delay in between these steps
