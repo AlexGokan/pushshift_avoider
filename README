@@ -5,3 +5,7 @@ this is designed to help keep your comments hidden from pushshift, since they ar
 it works by writing a blank comment, and then once praw has scanned it and upladed it to pushift, it will replace the body with what you actually wanted
 
 there should usually be no more than a 1-minute delay in between these steps
+
+please note that before using this tool, you must go through the necessary steps to register your account as a bot, and copy your information to user_data.txt.  Instructions are in the PRAW documentation
+
+This tool is still in development, please do not use it for now
