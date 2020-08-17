@@ -40,8 +40,6 @@ blank = []
 current_comments = []
 current_ids = []
 
-message = "this is a blank comment"
-
 while True:
 	url = "https://api.pushshift.io/reddit/search/comment"
 	params = {}
@@ -54,7 +52,7 @@ while True:
 	my_comments = reddit.redditor(username).comments.new(limit=10)
 	
 	for comment in my_comments:
-		if comment.created_utc > ta and comment.id not in current_ids and comment.body != message:
+		if comment.created_utc > ta and comment.id not in current_ids and comment.body != default_message:
 			current_comments.append(SpecialComment(comment))
 			current_ids.append(comment.id)
 	
@@ -62,7 +60,7 @@ while True:
 	for c in current_comments:		
 		if ta + 180 > c.comment.created_utc and not c.edited_blank:
 			print("editing comment " + c.comment.id)
-			c.comment.edit(message)
+			c.comment.edit(default_message)
 			c.edited_blank = True
 			blank.append(c)
 			
