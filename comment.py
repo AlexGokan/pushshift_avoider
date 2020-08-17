@@ -69,7 +69,7 @@ while True:
 	for b in blank:
 		#print(b.original_message)
 		comment_url = "https://api.pushshift.io/reddit/search/comment/"
-		comment_params = {"ids" : b.comment.id}
+		comment_params = {"ids" : b.comment.id, "author" : username}
 		b_cmt = requests.get(url,params = comment_params).json()['data']
 		if len(b_cmt) > 0:
 			b_cmt = b_cmt[0]
