@@ -45,7 +45,7 @@ while True:
 
 	ta = latest_comment['created_utc']
 	
-	my_comments = reddit.redditor(username).comments.new(limit=10)
+	my_comments = reddit.redditor(username).comments.new(limit=100)
 
 	current_comments = [c for c in current_comments if c[0].edited_blank == False]
 	current_ids = [c[1] for c in current_comments]
@@ -54,9 +54,9 @@ while True:
 		if comment.created_utc > ta and comment.id not in current_ids and comment.body != default_message:
 			current_comments.append((SpecialComment(comment),comment.id))
 
-	
-	
-	for c in current_comments:		
+
+
+	for c in current_comments:
 		if ta + 180 > c[0].comment.created_utc and not c[0].edited_blank:
 			print("editing comment " + c[0].comment.id)
 			c[0].comment.edit(default_message)
@@ -75,7 +75,7 @@ while True:
 			b_cmt = b_cmt[0]
 		
 			if b_cmt['author'] == username:
-				b.comment.edit(b.original_message)
+				b.comment.edit(b.original_message + "\n\n(edited)")
 				b.edited_back = True
 			
 		
@@ -83,6 +83,6 @@ while True:
 	
 		
 	print("------------")
-	time.sleep(0.5)
+	time.sleep(0.1)
 
 	

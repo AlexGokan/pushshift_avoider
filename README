@@ -6,4 +6,6 @@ it works by approximating the time that your comment will be scanned by Pushshif
 
 please note that before using this tool, you must go through the necessary steps to register your account as a bot, and copy your information to user_data.txt.  Instructions are in the PRAW documentation
 
+please also note that I do not guarantee that this will catch every comment.  The response time on pushshift can vary quite a bit from day to day and hour to hour, and sometimes a comment may be archived before this script can get to it
+
 This tool is still in development, please do not use it for now
