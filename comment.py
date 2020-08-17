@@ -1,6 +1,3 @@
-import praw
-import argparse
-import time
 
 import praw
 from psaw import PushshiftAPI
@@ -15,9 +12,6 @@ class SpecialComment():
 		self.edited_back = False
 		self.original_message = copy.copy(comment.body)
 	
-
-class CommentNotFoundError(Exception):
-	pass
 
 with open("user_data.txt","r") as f:
 	client_id = f.readline().rstrip()
@@ -41,6 +35,17 @@ current_comments = []
 current_ids = []
 
 while True:
+	"""
+	proposed new workflow:
+	
+	get list of comments that are possibly up for archival
+	if comment is within 3 minutes of archival, and its id doesnt exist in "edit back list", edit it, add its id to a file "edit back list"
+	for every comment in "edit back list"
+		if it is confirmed in PS, edit it back
+	"""
+
+
+
 	url = "https://api.pushshift.io/reddit/search/comment"
 	params = {}
 	comments = requests.get(url, params = params)
@@ -50,23 +55,23 @@ while True:
 	ta = latest_comment['created_utc']
 	
 	my_comments = reddit.redditor(username).comments.new(limit=10)
-	
+
+	current_comments = [c for c in current_comments if c[0].edited_blank == False]
+	current_ids = [c[1] for c in current_comments]
+
 	for comment in my_comments:
 		if comment.created_utc > ta and comment.id not in current_ids and comment.body != default_message:
-			current_comments.append(SpecialComment(comment))
-			current_ids.append(comment.id)
+			current_comments.append((SpecialComment(comment),comment.id))
+
 	
 	
 	for c in current_comments:		
-		if ta + 180 > c.comment.created_utc and not c.edited_blank:
-			print("editing comment " + c.comment.id)
-			c.comment.edit(default_message)
-			c.edited_blank = True
-			blank.append(c)
-			
-			current_comments.remove(c)
-			current_ids.remove(c.comment.id)
-	
+		if ta + 180 > c[0].comment.created_utc and not c[0].edited_blank:
+			print("editing comment " + c[0].comment.id)
+			c[0].comment.edit(default_message)
+			c[0].edited_blank = True
+			blank.append(c[0])
+
 	blank = [b for b in blank if b.edited_back == False]
 	
 	for b in blank:
@@ -86,6 +91,6 @@ while True:
 	
 		
 	print("------------")
-	time.sleep(3)
+	time.sleep(0.5)
 
 	
