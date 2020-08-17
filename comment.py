@@ -4,6 +4,7 @@ from psaw import PushshiftAPI
 import requests
 import time
 import copy
+import pickle
 
 class SpecialComment():
 	def __init__(self,comment):
@@ -11,7 +12,7 @@ class SpecialComment():
 		self.edited_blank = False
 		self.edited_back = False
 		self.original_message = copy.copy(comment.body)
-	
+
 
 with open("user_data.txt","r") as f:
 	client_id = f.readline().rstrip()
@@ -35,16 +36,6 @@ current_comments = []
 current_ids = []
 
 while True:
-	"""
-	proposed new workflow:
-	
-	get list of comments that are possibly up for archival
-	if comment is within 3 minutes of archival, and its id doesnt exist in "edit back list", edit it, add its id to a file "edit back list"
-	for every comment in "edit back list"
-		if it is confirmed in PS, edit it back
-	"""
-
-
 
 	url = "https://api.pushshift.io/reddit/search/comment"
 	params = {}
@@ -71,6 +62,7 @@ while True:
 			c[0].comment.edit(default_message)
 			c[0].edited_blank = True
 			blank.append(c[0])
+			pickle.dump((c[0].comment.id,c[0].original_message),open("saved_comments/" + str(c[0].comment.id) + ".p","wb"))
 
 	blank = [b for b in blank if b.edited_back == False]
 	
