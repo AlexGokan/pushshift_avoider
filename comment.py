@@ -44,6 +44,8 @@ while True:
 	latest_comment = comments.json()['data'][-1]
 
 	ta = latest_comment['created_utc']
+
+	archive_delay = latest_comment['retrieved_on'] - latest_comment['created_utc']
 	
 	my_comments = reddit.redditor(username).comments.new(limit=100)
 
@@ -82,7 +84,15 @@ while True:
 			
 	
 		
-	print("------------")
-	time.sleep(0.1)
+	print("------------" + "  delay: " + str(archive_delay))
+
+	if(archive_delay < 45):
+		time.sleep(0.05)
+	elif(archive_delay < 180):
+		time.sleep(archive_delay / 20)
+	else:
+		time.sleep(archive_delay / 3)
+
+	#time.sleep(0.1)
 
 	
