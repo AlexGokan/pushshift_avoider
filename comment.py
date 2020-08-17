@@ -70,7 +70,7 @@ while True:
 	blank = [b for b in blank if b.edited_back == False]
 	
 	for b in blank:
-		print(b.original_message)
+		#print(b.original_message)
 		comment_url = "https://api.pushshift.io/reddit/search/comment/"
 		comment_params = {"ids" : b.comment.id}
 		b_cmt = requests.get(url,params = comment_params).json()['data']
