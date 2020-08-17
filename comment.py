@@ -77,7 +77,7 @@ while True:
 			b_cmt = b_cmt[0]
 		
 			if b_cmt['author'] == username:
-				b.comment.edit(b.original_message + "\n\n(edited)")
+				b.comment.edit(b.original_message)
 				b.edited_back = True
 			
 		
